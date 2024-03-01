@@ -32,12 +32,12 @@
 
 				<form class="login100-form validate-form">
 					<span class="login100-form-title">
-						Member Login
+						Login
 					</span>
 
 				
 					<div class="wrap-input100 validate-input" data-validate = "Valid Username!">
-						<input class="input100" type="text" name="username" placeholder="Username">
+						<input class="input100" type="text" name="username" id="username" placeholder="Username">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user" aria-hidden="true"></i>
@@ -45,7 +45,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+						<input class="input100" type="password" name="password" id="password" placeholder="Password">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -53,8 +53,8 @@
 					</div>
 					
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							<a href="home.php">Login</a>
+						<button class="login100-form-btn" id="loginBtn">
+							Login
 						</button>
 					</div>
 
@@ -72,8 +72,28 @@
 	</div>
 	
 	
+<script>
 
+	document.getElementById('loginBtn').addEventListener('click', function(event) {
+		// Ngăn chặn sự kiện mặc định của nút submit
+		event.preventDefault();
 	
+		// Lấy giá trị từ các trường input
+		var username = document.getElementById('username').value;
+		var password = document.getElementById('password').value;
+		
+	
+		// Kiểm tra các điều kiện để đảm bảo thông tin hợp lệ
+		if (username.trim() === '' || password.trim() === '' ) {
+			alert('Vui lòng điền đầy đủ thông tin.');
+			return;
+		}
+		window.location.href = 'home.html';
+
+	});
+	
+
+	</script>
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
