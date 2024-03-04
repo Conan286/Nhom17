@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kết quả bài Thi</title>
+  <link rel="stylesheet" href="../css/test.css">
+  <link rel="icon" type="image/png" href="../images/ptit.png">
+</head>
+<body>
+  <div class="overlay_re">
+    <div class="content_re">
+      <div class="container">
+        <div class="content_re1">
+          <!-- Nội dung của content_re1 -->
+          <div id="correctAnswersCount">
+         
+          </div>
+        </div>
+        <div class="content_re2 ">
+          <!-- Nội dung của content_re2 -->
+          <h2>Điểm số của bạn: </h2>
+          <div id="result"></div>
+          <!-- <p class="text-rec2" ></p> -->
+        </div>
+        <div class="content_re3">
+            <div id="questionAnswer" class="question-container">
+            <!-- Câu trả lời đã làm và các đáp án tương ứng sẽ được thêm vào đây bằng JavaScript -->
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy điểm số và các chi tiết từ Local Storage
+        let score = localStorage.getItem('score');
+        let userAnswers = JSON.parse(localStorage.getItem('userAnswers'));
+        let correctAnswers = ["Mô hình dữ liệu quan hệ", "Tất cả câu trên", "Bảng", "Tất cả đáp án trên", "Phần mềm dùng để tạo lập, cập nhật và khai thác CSDL quan hệ", "Miền của các thuộc tính khác nhau không nhất thiết phải khác nhau", "Quan hệ không có thuộc tính đa trị hay phức tạp", "Nên chọn khoá chính là khóa có ít thuộc tính nhất", "Trường SOBH là duy nhất, trong khi đó trường HOTEN không phải là duy nhất", "HoaDon"];
+    
+        // Hiển thị điểm số và các chi tiết
+        let resultElement = document.getElementById('result');
+        let correctAnswerElement = document.getElementById('correctAnswersCount');
+        resultElement.innerHTML = `<p>Điểm số của bạn: ${score}</p>`;
+        correctAnswerElement.innerHTML = `   <h2>Tổng số câu đúng: </h2>
+        <p class="text-rec"> <span >${score}</span> /10</p>`;
+        // Hiển thị các chi tiết khác ở đây, ví dụ:
+        // resultElement.innerHTML += `<p>Câu trả lời của bạn: ${userAnswers}</p>`;
+        // Hiển thị câu trả lời và đáp án chính xác
+        let questionContainer = document.getElementById('questionAnswer');
+
+        // Duyệt qua từng câu hỏi để hiển thị câu trả lời của người dùng và đáp án đúng
+        for (let i = 0; i < correctAnswers.length; i++) {
+            let userAnswer = userAnswers[i];
+            let correctAnswer = correctAnswers[i];
+    
+            // Tạo phần tử cho câu hỏi
+            let questionElement = document.createElement('div');
+            questionElement.classList.add('question');
+            questionElement.innerHTML = `<h3>Câu ${i + 1}</h3>`;
+    
+            // Hiển thị câu trả lời của người dùng và đáp án đúng
+            questionElement.innerHTML += `<p>Câu trả lời của bạn: ${userAnswer===null?'Bạn Chưa Trả Lời Câu Hỏi Này!':userAnswer} </p>`;
+            questionElement.innerHTML += `<p>Đáp án đúng: ${correctAnswer}</p>`;
+          
+            questionContainer.appendChild(questionElement); // Thêm câu hỏi vào container
+        }
+        questionContainer.style.display();
+
+        
+        // Xóa dữ liệu từ Local Storage sau khi hiển thị kết quả
+        localStorage.removeItem('score');
+        localStorage.removeItem('userAnswers');
+    });
+</script>
+  <script src="../js/test_re.js"></script>
+</body>
+</html>
