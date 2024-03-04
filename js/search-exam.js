@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div>
                                 <h5 class="mb-2">${result.name}</h5>
 
-                                <p class="mb-0"> <a href="#" class="btn custom-btn mt-2 mt-lg-3">${result.kind}</a></p>
+                                <p class="mb-0"> <a href=${result.status === 'Đang mở' ? "exam/test.html" : "#"} class="btn custom-btn mt-2 mt-lg-3">${result.kind}</a></p>
                             </div>
                            
                             <span class="badge bg-design rounded-pill ms-auto" style="width:100px; background-color:${result.status === 'Đang mở' ? 'green' : 'red'};">${result.status}</span>
