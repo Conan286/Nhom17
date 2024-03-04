@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kết quả bài Thi</title>
+  <link rel="stylesheet" href="test.css">
+</head>
+<body>
+  <div class="overlay_re">
+      <div class="content_re">
+          <div class="container">
+              <div class="content_re1">
+                <!-- Nội dung của content_re1 -->
+                  <div>
+                      <h2>Tổng số câu đúng: </h2>
+                      <div class="text-rec" id="resultMessage"> </div>
+                  </div>
+              </div>
+              <div class="content_re2 ">
+                <!-- Nội dung của content_re2 -->
+                  <h2>Điểm số của bạn : </h2>
+                  <div class="text-rec2" id="result"></div>
+              </div>
+              <div class="content_re3">
+                  <!-- Nội dung của content_re3 -->
+                  <div  id="answersDetails"> </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let questionTitles = [
+            "Mô hình phổ biến để xây dựng CSDL quan hệ là ?",
+            "Các khái niệm dùng để mô tả các yếu tố nào sẽ tạo thành mô hình dữ liệu quan hệ?",
+            "Trong mô hình quan hệ, về mặt cấu trúc thì dữ liệu được thể hiện trong các:",
+            "Thao tác trên dữ liệu có thể là",
+            "Phát biểu nào về hệ QTCSDL là đúng?",
+            "Phát biểu nào sau đây là sai khi nói về miền?",
+            "Đặc điểm nào sau đây không là đặc trưng của một quan hệ trong hệ CSDL quan hệ?",
+            "Phát biểu nào sau đây là sai khi nói về khoá chính?",
+            "Giả sử một bảng có 2 trường SOBH (số bảo hiểm) và HOTEN (họ tên) thì nên chọn trường SOBH làm khóa chính hơn vì",
+            "Cho các bảng sau : DanhMuc Sach(MaSach, TenSach, MaLoai), LoaiSach(MaLoai, LoaiSach), HoaDon(MaSach, SoLuong, DonGia). Để biết giá của một quyển sách thì cần những bảng nào"
+        ];
+        let questionLabels = [
+            ["A.Mô hình phân cấp", "B.Mô hình dữ liệu quan hệ", "C.Mô hình hướng đối tượng", "D.Mô hình cơ sở quan hệ"],
+            ["A.Cấu trúc dữ liệu", "B.Các ràng buộc dữ liệu", "C.Các thao tác, phép toán dữ liệu", "D.Tất cả câu trên"],
+            ["A.Cột", "B.Hàng", "C.Bảng", "D.Báo cáo"],
+            ["A.Sửa bản ghi", "B.Thêm bản ghi", "C.Xoá bản ghi", "D.Tất cả đáp án trên"],
+            ["A.Phần mềm dùng để xây dựng các CSDL quan hệ", "B.Phần mềm dùng để tạo lập, cập nhật và khai thác CSDL quan hệ", "C.Phần mềm Microsoft Access", "D.Phần mềm dùng để giải các bài toán quản lý có chứa các quan hệ giữa các dữ liệu"],
+            ["A.Các miền của các thuộc tính khác nhau không nhất thiết phải khác nhau", "B.Mỗi thuộc tính có thể có hai miền trở lên", "C.Hai thuộc tính khác nhau có thể cùng miền", "D.Miền của thuộc tính họ tên thường là kiểu text"],
+            ["A.Các bộ phân biệt và thứ tự các bộ không quan trọng", "B.Quan hệ không có thuộc tính đa trị hay phức tạp", "C.Mỗi thuộc tính có một tên phân biệt và thứ tự các thuộc tính là quan trọng", "D.Tên của các quan hệ có thể trùng nhau"],
+            ["A.Một bảng có thể có nhiều khoá chính", "B.Mỗi bảng có ít nhất một khoá", "C.Xác định khoá phụ thuộc vào quan hệ logic của các dữ liệu chứ không phụ thuộc vào giá trị các dữ liệu", "D.Nên chọn khoá chính là khóa có ít thuộc tính nhất"],
+            ["A.Trường SOBH là duy nhất, trong khi đó trường HOTEN không phải là duy nhất", "B.Trường SOBH là kiểu số, trong khi đó trường HOTEN không phải là kiểu số", "CTrường SOBH đứng trước trường HOTEN", "D.Trường SOBH là trường ngắn hơn"],
+            ["A.HoaDon", "B.DanhMucSach, HoaDon", "C.DanhMucSach, LoaiSach", "D.HoaDon, LoaiSach"]
+        ];
+        let score = localStorage.getItem('score');
+        let userAnswers = JSON.parse(localStorage.getItem('userAnswers'));
+        let correctAnswers = ["B.Mô hình dữ liệu quan hệ", "D.Tất cả câu trên", "C.Bảng", "D.Tất cả đáp án trên", "B.Phần mềm dùng để tạo lập, cập nhật và khai thác CSDL quan hệ", "D.Miền của các thuộc tính khác nhau không nhất thiết phải khác nhau", "B.Quan hệ không có thuộc tính đa trị hay phức tạp", "D.Nên chọn khoá chính là khóa có ít thuộc tính nhất", "A.Trường SOBH là duy nhất, trong khi đó trường HOTEN không phải là duy nhất", "A.HoaDon"];
+        let correctCount = 0;
+        for (let i = 0; i < correctAnswers.length; i++) {
+            if (userAnswers[i] === correctAnswers[i]) {
+                correctCount++;
+            }
+        }
+
+        let resultMessage = document.getElementById('resultMessage');
+        resultMessage.textContent = `${correctCount} / ${correctAnswers.length} `;
+        let resultElement = document.getElementById('result');
+        resultElement.innerHTML = `<p> ${score}</p>`;
+
+        let answersDetailsHTML = '<h2>Câu Trả Lời Chi Tiết:</h2>';
+        for (let i = 0; i < correctAnswers.length; i++) {
+          let questionTitle = questionTitles[i];
+          let questionLabelsHTML = '';
+          let questionLabel = questionLabels[i];
+          questionLabel.forEach((label) => {
+              questionLabelsHTML += `<span style="display: block; padding-left: 20px">${label}</span><br>`;
+          });
+          let userAnswer = userAnswers[i];
+          let correctAnswer = correctAnswers[i];
+          let answerClass = userAnswer === correctAnswer ? 'correct' : 'incorrect'; // Kiểm tra xem câu trả lời có đúng không
+          answersDetailsHTML += `<p class="${answerClass}"><strong>Câu ${i + 1}:</strong> 
+                ${questionTitle}.<br>
+                ${questionLabelsHTML}.<br>
+                Câu trả lời của bạn: ${userAnswer}.<br>
+                Đáp án đúng: ${correctAnswer}.<br></p>`;
+        }
+
+        let answersDetails = document.getElementById('answersDetails');
+        answersDetails.innerHTML = answersDetailsHTML;
+
+        localStorage.removeItem('score');
+        localStorage.removeItem('userAnswers');
+    });
+  </script>
+  
+  <script src="script.js"defer></script>
+</body>
+</html>
