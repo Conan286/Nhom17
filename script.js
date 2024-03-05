@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let submitBtn = document.getElementById('submitBtn');
     let message = document.getElementById('message');
     let timer = document.getElementById('time');
-    let totalTime = 60; 
+    let score = 0;
+    let totalTime = 60; // 1 minutes in seconds
     let timeLeft = totalTime;
     let timerInterval;
 
@@ -15,17 +16,28 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateTimer() {
         timer.textContent = formatTime(timeLeft);
         if (timeLeft === 0) {
+            
+
+            let userAnswers = getUserAnswers();
             clearInterval(timerInterval);
-            message.textContent = "Hết giờ!";
+            
+            alert('Hết giờ, Bài đã được nộp!');
             submitBtn.disabled = true;
+        
+            // Tính điểm số
+            let score = calculateScore(userAnswers);
+            console.log(userAnswers);
+        
+            // Lưu kết quả và chuyển hướng sang trang result
+            redirectToResultPage(score, userAnswers);
         }
         timeLeft--;
     }
 
     timerInterval = setInterval(updateTimer, 1000);
 
-    let correctAnswers = ["B.Mô hình dữ liệu quan hệ", "D.Tất cả câu trên", "C.Bảng", "D.Tất cả đáp án trên", "B.Phần mềm dùng để tạo lập, cập nhật và khai thác CSDL quan hệ", "D.Miền của các thuộc tính khác nhau không nhất thiết phải khác nhau", "B.Quan hệ không có thuộc tính đa trị hay phức tạp", "D.Nên chọn khoá chính là khóa có ít thuộc tính nhất", "A.Trường SOBH là duy nhất, trong khi đó trường HOTEN không phải là duy nhất", "A.HoaDon"];
-    let userAnswers = []; 
+    let correctAnswers = ["Mô hình dữ liệu quan hệ", "Tất cả câu trên", "Bảng", "Tất cả đáp án trên", "Phần mềm dùng để tạo lập, cập nhật và khai thác CSDL quan hệ", "Miền của các thuộc tính khác nhau không nhất thiết phải khác nhau", "Quan hệ không có thuộc tính đa trị hay phức tạp", "Nên chọn khoá chính là khóa có ít thuộc tính nhất", "Trường SOBH là duy nhất, trong khi đó trường HOTEN không phải là duy nhất", "HoaDon"];
+    let userAnswers = []; // Mảng lưu trữ các đáp án mà người dùng chọn
 
     let questionTitles = [
         "Mô hình phổ biến để xây dựng CSDL quan hệ là ?",
@@ -40,26 +52,30 @@ document.addEventListener('DOMContentLoaded', function() {
         "Cho các bảng sau : DanhMuc Sach(MaSach, TenSach, MaLoai), LoaiSach(MaLoai, LoaiSach), HoaDon(MaSach, SoLuong, DonGia). Để biết giá của một quyển sách thì cần những bảng nào"
     ];
     let questionLabels = [
-        ["A.Mô hình phân cấp", "B.Mô hình dữ liệu quan hệ", "C.Mô hình hướng đối tượng", "D.Mô hình cơ sở quan hệ"],
-        ["A.Cấu trúc dữ liệu", "B.Các ràng buộc dữ liệu", "C.Các thao tác, phép toán dữ liệu", "D.Tất cả câu trên"],
-        ["A.Cột", "B.Hàng", "C.Bảng", "D.Báo cáo"],
-        ["A.Sửa bản ghi", "B.Thêm bản ghi", "C.Xoá bản ghi", "D.Tất cả đáp án trên"],
-        ["A.Phần mềm dùng để xây dựng các CSDL quan hệ", "B.Phần mềm dùng để tạo lập, cập nhật và khai thác CSDL quan hệ", "C.Phần mềm Microsoft Access", "D.Phần mềm dùng để giải các bài toán quản lý có chứa các quan hệ giữa các dữ liệu"],
-        ["A.Các miền của các thuộc tính khác nhau không nhất thiết phải khác nhau", "B.Mỗi thuộc tính có thể có hai miền trở lên", "C.Hai thuộc tính khác nhau có thể cùng miền", "D.Miền của thuộc tính họ tên thường là kiểu text"],
-        ["A.Các bộ phân biệt và thứ tự các bộ không quan trọng", "B.Quan hệ không có thuộc tính đa trị hay phức tạp", "C.Mỗi thuộc tính có một tên phân biệt và thứ tự các thuộc tính là quan trọng", "D.Tên của các quan hệ có thể trùng nhau"],
-        ["A.Một bảng có thể có nhiều khoá chính", "B.Mỗi bảng có ít nhất một khoá", "C.Xác định khoá phụ thuộc vào quan hệ logic của các dữ liệu chứ không phụ thuộc vào giá trị các dữ liệu", "D.Nên chọn khoá chính là khóa có ít thuộc tính nhất"],
-        ["A.Trường SOBH là duy nhất, trong khi đó trường HOTEN không phải là duy nhất", "B.Trường SOBH là kiểu số, trong khi đó trường HOTEN không phải là kiểu số", "CTrường SOBH đứng trước trường HOTEN", "D.Trường SOBH là trường ngắn hơn"],
-        ["A.HoaDon", "B.DanhMucSach, HoaDon", "C.DanhMucSach, LoaiSach", "D.HoaDon, LoaiSach"]
+        ["Mô hình phân cấp", "Mô hình dữ liệu quan hệ", "Mô hình hướng đối tượng", "Mô hình cơ sở quan hệ"],
+        ["Cấu trúc dữ liệu", "Các ràng buộc dữ liệu", "Các thao tác, phép toán dữ liệu", "Tất cả câu trên"],
+        ["Cột", "Hàng", "Bảng", "Báo cáo"],
+        ["Sửa bản ghi", "Thêm bản ghi", "Xoá bản ghi", "Tất cả đáp án trên"],
+        ["Phần mềm dùng để xây dựng các CSDL quan hệ", "Phần mềm dùng để tạo lập, cập nhật và khai thác CSDL quan hệ", "Phần mềm Microsoft Access", "Phần mềm dùng để giải các bài toán quản lý có chứa các quan hệ giữa các dữ liệu"],
+        ["Các miền của các thuộc tính khác nhau không nhất thiết phải khác nhau", "Mỗi thuộc tính có thể có hai miền trở lên", "Hai thuộc tính khác nhau có thể cùng miền", "Miền của thuộc tính họ tên thường là kiểu text"],
+        ["Các bộ phân biệt và thứ tự các bộ không quan trọng", "Quan hệ không có thuộc tính đa trị hay phức tạp", "Mỗi thuộc tính có một tên phân biệt và thứ tự các thuộc tính là quan trọng", "Tên của các quan hệ có thể trùng nhau"],
+        ["Một bảng có thể có nhiều khoá chính", "Mỗi bảng có ít nhất một khoá", "Xác định khoá phụ thuộc vào quan hệ logic của các dữ liệu chứ không phụ thuộc vào giá trị các dữ liệu", "Nên chọn khoá chính là khóa có ít thuộc tính nhất"],
+        ["Trường SOBH là duy nhất, trong khi đó trường HOTEN không phải là duy nhất", "Trường SOBH là kiểu số, trong khi đó trường HOTEN không phải là kiểu số", "Trường SOBH đứng trước trường HOTEN", "Trường SOBH là trường ngắn hơn"],
+        ["HoaDon", "DanhMucSach, HoaDon", "DanhMucSach, LoaiSach", "HoaDon, LoaiSach"]
     ];
 
-    let questionContainer = document.getElementById('questionContainer'); 
+    let questionContainer = document.getElementById('questionContainer'); // Lấy phần tử chứa câu hỏi từ DOM
 
+    // Kiểm tra xem phần tử có tồn tại không
     if (questionContainer) {
+        // Duyệt qua mảng questionTitles để tạo các phần tử câu hỏi
         questionTitles.forEach((title, index) => {
+            // Tạo phần tử câu hỏi và gán nội dung từ mảng questionTitles
             let questionElement = document.createElement('div');
             questionElement.classList.add('question');
             questionElement.innerHTML = `<h3>Câu ${index + 1}: ${title}</h3>`;
 
+            // Duyệt qua mảng questionLabels để tạo các phần tử đáp án cho câu hỏi
             let labelContainer = document.createElement('div');
             questionLabels[index].forEach((label, labelIndex) => {
                 let labelElement = document.createElement('label');
@@ -72,46 +88,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 labelContainer.appendChild(labelElement);
             });
 
-            questionElement.appendChild(labelContainer); 
-            questionContainer.appendChild(questionElement); 
+            questionElement.appendChild(labelContainer); // Thêm các phần tử đáp án vào câu hỏi
+
+            questionContainer.appendChild(questionElement); // Thêm câu hỏi vào container
         });
     }
     
     function getUserAnswers() {
-        let userAnswers = []; 
-        let inputElements = document.querySelectorAll('input[type="radio"]');
-        inputElements.forEach(input => {
-            if (input.checked) { 
-                userAnswers.push(input.value); 
-            }
-        });
+        let userAnswers = []; // Khởi tạo một mảng để lưu trữ các câu trả lời từ người dùng
     
-        return userAnswers; 
+        // Lặp qua tất cả các phần tử input có type là radio để kiểm tra xem người dùng đã chọn câu trả lời nào
+        let inputElements = document.querySelectorAll('input[type="radio"]');
+        let currentQuestionAnswers = [];
+        let cnt = null;
+        inputElements.forEach((input, index) => {
+        if(input.checked) cnt = input.value;
+        // Nếu đã kiểm tra xong 4 câu trả lời cho một câu hỏi, thêm vào mảng và reset
+        if ((index + 1) % 4 === 0) {
+            userAnswers.push(cnt);
+            currentQuestionAnswers = [];
+            cnt = null;
+        }
+    });
+      
+        return userAnswers; // Trả về mảng userAnswers với các câu trả lời từ người dùng
     }
 
-    submitBtn.addEventListener('click', function() {
-        message.textContent = "Bài đã được nộp!";
-        submitBtn.disabled = true;
-        let userAnswers = getUserAnswers(); 
-        console.log(userAnswers);
-        localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
 
-        let score = calculateScore(correctAnswers, userAnswers);
+    submitBtn.addEventListener('click', function() {
+        // Lấy thông tin câu trả lời của người dùng
+        let userAnswers = getUserAnswers();
         clearInterval(timerInterval);
         
+        alert('Bài đã được nộp!');
+        submitBtn.disabled = true;
+    
+        // Tính điểm số
+        let score = calculateScore(userAnswers);
+        console.log(userAnswers);
+    
+        // Lưu kết quả và chuyển hướng sang trang result
         redirectToResultPage(score, userAnswers);
     });
-    
-    function calculateScore(correctAnswers, userAnswers) {
+
+    function calculateScore(userAnswers) {
         let score = 0;
         for (let i = 0; i < correctAnswers.length; i++) {
             if (userAnswers[i] === correctAnswers[i]) {
                 score++;
             }
         }
+       
         return score;
     }
-    
+
     function redirectToResultPage(score, userAnswers) {
         localStorage.setItem('score', score);
         localStorage.setItem('userAnswers', JSON.stringify(userAnswers));
