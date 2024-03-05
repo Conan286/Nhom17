@@ -5,7 +5,7 @@
 }
 
 .container {
-    display: block;
+    display: flex;
     height: 100vh;
 }
 
