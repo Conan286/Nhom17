@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/d_admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li id="option1">Quản lý danh sách các kỳ thi</li>
+                <li id="option2">Quản lý danh sách người dùng</li>
+                <li id="option3">Xem thống kê</li>
+                <li id="option4">Tạo / Chỉnh sửa kỳ thi</li>
+                <li id="option5">Thống kê từng sinh viên</li>
+                <li id="option6">Kết quả của từng sinh viên</li>
+            </ul>
+        </div>
+        <div class="main">
+            <h1>Dashboard</h1>
+            <div id="content1" style="display: none;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tên kỳ thi</th>
+                            <th>Thời gian</th>
+                            <th>Số lượng thí sinh</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kỳ thi A</td>
+                            <td>10/03/2024</td>
+                            <td>100</td>
+                            <td>
+                                <button class="edit">Chỉnh sửa</button>
+                                <button class="delete">Xóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kỳ thi B</td>
+                            <td>15/03/2024</td>
+                            <td>150</td>
+                            <td>
+                                <button class="edit">Chỉnh sửa</button>
+                                <button class="delete">Xóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kỳ thi C</td>
+                            <td>20/03/2024</td>
+                            <td>200</td>
+                            <td>
+                                <button class="edit">Chỉnh sửa</button>
+                                <button class="delete">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button id="add">Thêm mới</button>
+            </div>
+            
+            <div id="content2" style="display: none;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tên sinh viên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sinh viên a</td>
+                            <td>sva@gmail.com</td>
+                            <td>0123456789</td>
+                            <td>
+                                <button class="edit">Chỉnh sửa</button>
+                                <button class="delete">Xóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sinh viên b</td>
+                            <td>svb@gmail.com</td>
+                            <td>0987654321</td>
+                            <td>
+                                <button class="edit">Chỉnh sửa</button>
+                                <button class="delete">Xóa</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sinh viên c</td>
+                            <td>svc@gmail.com</td>
+                            <td>1234567890</td>
+                            <td>
+                                <button class="edit">Chỉnh sửa</button>
+                                <button class="delete">Xóa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button id="add">Thêm mới</button>
+            </div>
+            <div id="content3" style="display: none;">
+                <div class="features">
+                    <button class="option_chart" id="feature1">Số lượng người dùng tham gia</button><br><br>
+                    <button class="option_chart" id="feature2">Tỷ lệ hoàn thành</button><br><br>
+                    <button class="option_chart" id="feature3">Điểm trung bình</button><br><br>
+                </div>
+                <div class="chart" id="chart1"></div>
+                <div class="chart" id="chart2"></div>
+                <div class="chart" id="chart3"></div>
+            </div>
+            <div id="content4" style="display: none;">
+                <form id="examForm">
+                    <div>    
+                        <h1>Tạo, chỉnh sửa kỳ thi</h1>
+                        <!-- Thông tin kỳ thi -->
+                        <label for="examName">Tên kỳ thi:</label>
+                        <input type="text" id="examName" required>
+        
+                        <label for="examDescription">Mô tả:</label>
+                        <textarea id="examDescription" required></textarea>
+        
+                        <label for="examType">Loại kỳ thi:</label>
+                        <select id="examType" required>
+                            <option value="free">Tự do</option>
+                            <option value="timed">Thời gian cụ thể</option>
+                        </select>
+        
+                        <!-- Danh sách câu hỏi -->
+                        <label for="questions">Danh sách câu hỏi:</label>
+                        <ul id="questions"></ul>
+                        <script src="js/scripts-cAdmin.js"></script>
+                        <!-- Tính năng thêm, chỉnh sửa, xóa câu hỏi -->
+                        <button type="button" onclick="addQuestion()">Thêm câu hỏi</button>
+                        <button type="button" onclick="editQuestion()">Chỉnh sửa câu hỏi</button>
+                        <button type="button" onclick="deleteQuestion()">Xóa câu hỏi</button>
+                    </div>
+                    <!-- Nút submit để lưu thông tin kỳ thi -->
+                    <div id="luu"><button type="submit" onclick="saveInf()">Lưu thông tin kỳ thi</button></div>
+                </form>
+            </div>
+            <div id="content5" style="display: none;">
+                <div class="container">
+                    <h1>Danh sách Sinh viên</h1>
+                    <table id="studentTable">
+                        <thead>
+                            <tr>
+                                <th>Họ</th>
+                                <th>Tên</th>
+                                <th>Tổng số lần tham gia</th>
+                                <th>Tỷ lệ hoàn thành (%)</th>
+                                <th>Điểm trung bình</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    
+            
+                    <div id="actions">
+                        <button onclick="addStudent()">Thêm Sinh viên</button>
+                        <button onclick="editStudent()">Sửa Sinh viên</button>
+                        <button onclick="deleteStudent()">Xoá Sinh viên</button>
+                    </div>
+            
+                   <h3>Tìm sinh viên theo tên</h3>
+                   
+                   <input type="text" id="findName">
+                   <button onclick="findStudentTable()">Tìm</button>
+            
+                   <table id="studentTable1">
+                    <thead>
+                        <tr>
+                            <th>Họ</th>
+                            <th>Tên</th>
+                            <th>Tổng số lần tham gia</th>
+                            <th>Tỷ lệ hoàn thành (%)</th>
+                            <th>Điểm trung bình</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                </div>
+            
+               
+            
+                <!-- Biểu đồ phân phối điểm -->
+                <div id="scoreDistributionChart" class="chart-container">
+                    <canvas id="chartCanvas"></canvas>
+                </div>
+            </div>
+            <div id="content6" style="display: none;">
+                <h1>Trang Xem Kết quả của Từng Sinh Viên</h1>
+                <form id="search-form">
+                    <label for="search-input">Nhập tên hoặc mã số sinh viên:</label>
+                    <input type="text" id="search-input" placeholder="Ví dụ: Nguyễn Văn A hoặc SV001">
+                    <button type="submit" id="search-button">Tìm kiếm</button>
+                </form>
+                <div id="result-table"></div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="./js/c_admin.js"></script>
+    <script src="./js/d_admin.js"></script>
+    <script src="./js/e_admin.js"></script>
+</body>
+</html>
+
